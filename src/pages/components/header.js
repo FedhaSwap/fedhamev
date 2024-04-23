@@ -1,15 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { ethers } from "ethers";
-import { NotificationContainer, NotificationManager } from 'react-notifications';
 import Jazzicon from 'react-jazzicon'
 
+import * as ed from '@noble/ed25519';
 
 function trimAddress(address) {
     const length = address.length;
     const trimmedAddress = address.slice(0, 4) + "...." + address.slice(length - 4, length);
     return trimmedAddress;
 }
+function getAccountId(userAddress, brokerId) {
+    const abiCoder = ethers.utils.defaultAbiCoder;
+  
+    // Pack brokerId as a string
+    const encodedBrokerId = ethers.utils.formatBytes32String(brokerId);
+  
+    // Encode userAddress and packed brokerId
+    const encodedData = abiCoder.encode(
+      ['address', 'bytes32'],
+      [userAddress, encodedBrokerId]
+    );
+  
+    // Return the keccak256 hash of the encoded data
+    return ethers.utils.keccak256(encodedData);
+  }
 const customStyles = {
     content: {
         top: '50%',
@@ -84,7 +99,25 @@ function Header() {
         const accounts = await window.ethereum.request({method: 'eth_accounts'});  
        
         if(accounts.length > 0){
-             setWalletAddress(accounts[0])     
+             setWalletAddress(accounts[0])  
+             console.log(getAccountId(accounts[0],'orderly'))  
+             const privateKey = ed.utils.randomPrivateKey();
+
+            async function generatePublicKey() {
+            try {
+                // Get the public key from the private key (Promise)
+                const privKey = ed.utils.randomPrivateKey(); // Secure random private key
+                const message = Uint8Array.from([0xab, 0xbc, 0xcd, 0xde]);
+                const pubKey = await ed.getPublicKeyAsync(privKey); // Sync methods below
+                const signature = await ed.signAsync(message, privKey);
+                const isValid = await ed.verifyAsync(signature, message, pubKey);
+                
+            } catch (error) {
+                console.error('Error generating public key:', error);
+            }
+            }
+
+            generatePublicKey(); 
         }
         else{
             setWalletAddress(null)
@@ -149,13 +182,13 @@ function Header() {
                     </div>
                 </Modal>
             </div>
-            <button className="scrollToTop d-none d-md-flex d-center" aria-label="scroll Bar Button">
+            {/* <button className="scrollToTop d-none d-md-flex d-center" aria-label="scroll Bar Button">
                 <i className="ti ti-chevron-up fs-four p6-color"></i>
             </button>
 
             <div id="preloader" className="pre-item d-center">
                 <div className="loaderall"></div>
-            </div>
+            </div> */}
 
 
 

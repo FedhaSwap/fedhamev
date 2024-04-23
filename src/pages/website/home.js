@@ -76,7 +76,7 @@ function Home() {
                         <h4 className="mb-4 mb-md-5">M-Pesa Swap</h4>
                         <p className="mb-6 mb-md-8">FedhaSwap is a revolutionary decentralized exchange (DEX) that breaks down barriers to crypto for everyone. Unlike traditional DEXes limited to popular fiat currencies, FedhaSwap empowers you to seamlessly swap between any fiat currency supported by our vast mobile money network providers and a wide range of cryptocurrencies. Trade Crypto Your Way with FedhaSwap FedhaSwap shatters the limitations of traditional DEXes. No more restrictions on fiat currencies! Seamlessly swap between any fiat currency</p>
                         <div className="web3_product__item-btn">
-                            <a className="cmn-btn third-alt px-3 py-2 rounded-5" href="swap.html"><i
+                            <a className="cmn-btn third-alt px-3 py-2 rounded-5" href="#"><i
                                     className="ti ti-arrow-up-right fs-four"></i></a>
                         </div>
                     </div>
